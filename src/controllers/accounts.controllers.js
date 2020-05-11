@@ -155,10 +155,10 @@ async function getUserContact(req, res) {
     try {
         let [user] = await account.getUserById(id);
         if (!user.length)
-            throw new Error("Username is not exist");
+            throw new Error("User is not exist");
 
-        let [contact] = await account.getContactByUserid(id)
-        console.log("trest");
+        let [contact] = await account.getContactByUserid(id);
+
         if(!contact.length){
             await account.createContactRow(id);
             let [contact] = await account.getContactByUserid(id)
