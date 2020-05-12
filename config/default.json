@@ -1,9 +1,9 @@
  {
   "PORT": 5000,
   "DATABASE": {
-    "HOST": "localhost",
+    "HOST": "18.162.154.12",
     "USER": "root",
-    "PASSWORD": "Thang131",
+    "PASSWORD": "Thang131@",
     "NAME": "mobile"
   },
   "SECRET_KEY": "pum9BT+Eu6{U-,1",
