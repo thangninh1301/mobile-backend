@@ -19,11 +19,11 @@ async function createShop(name, user_id) {
                             VALUES("${name}", "${user_id}")`);
 }
 
-async function update(new_name, new_description) {
+async function update(user_id,new_name, new_description) {
     await dbPool.query(`UPDATE shops
                             SET name = "${new_name}",
-                            SET description = "${new_description}"
-                            WHERE id = ${id}`);
+                                description = "${new_description}"
+                            WHERE user_id = ${user_id}`);
 }
 module.exports = {
     getShopByName,

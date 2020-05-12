@@ -3,12 +3,14 @@ const jwt = require("jsonwebtoken");
 const shopModels = require("../models/shop.models");
 const responseUtil = require("../utils/response.utils")
 
-async function register(req, res) {
+async function create(req, res) {
     const {
         name
     } = req.body;
     const {id}=req.tokenData;
     try {
+        if (!name.length)
+            throw new Error("name field is missing");
         if (name.length < 8)
             throw new Error("name must greater than 8 characters");
 
@@ -35,7 +37,7 @@ async function update(req, res) {
     } = req.body;
     const {id}=req.tokenData;
     try {
-        if (name.length < 8)
+        if (new_name.length < 8)
             throw new Error("name must greater than 8 characters");
 
         const [existedShop] = await shopModels.getShopByName(new_name);
@@ -46,7 +48,7 @@ async function update(req, res) {
         if (!existedShop2.length)
             throw new Error("shop is not created");
 
-        await shopModels.update(new_name,new_description);
+        await shopModels.update(id,new_name,new_description);
 
         res.json(responseUtil.success({data: {}}));
     } catch (err) {
@@ -71,7 +73,7 @@ async function getOwnerShopInfo(req, res) {
 
 
 module.exports = {
-    register,
+    create,
     update,
     getOwnerShopInfo
 

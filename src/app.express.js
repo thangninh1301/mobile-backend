@@ -3,7 +3,9 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 
-const accountRoute = require("./routes/accounts.routes")
+const accountRoute = require("./routes/accounts.routes");
+const shopRoute = require("./routes/shop.routes");
+const productRoute = require("./routes/products.routes");
 
 const appExpress = express();
 
@@ -14,9 +16,11 @@ appExpress.use(morgan("combined"));
 
 appExpress.use(express.static('./dist'));
 appExpress.use("/accounts/",accountRoute);
+appExpress.use("/products/",productRoute);
+appExpress.use("/shops/",shopRoute);
 
 appExpress.use("/", (req, res) => {
-    res.sendFile('index.html');
+    res.send('mobile-backend');
 });
 
 module.exports = appExpress;
