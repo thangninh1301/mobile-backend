@@ -34,7 +34,7 @@ async function create(req, res) {
 async function getCarts(req, res) {
     const {id}=req.tokenData;
     try {
-        [rows]= await models.getCartExist(id)
+        [rows]= await models.getCarts(id)
 
 
         res.json(responseUtil.success({data: {rows}}));
@@ -44,5 +44,6 @@ async function getCarts(req, res) {
 }
 
 module.exports={
-    create
+    create,
+    getCarts
 }

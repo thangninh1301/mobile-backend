@@ -25,12 +25,10 @@ async function getCartExist(user_id,product_id) {
 async function getCarts(user_id) {
     const [rows] = await dbPool.query(`SELECT * 
                                          FROM cart
-                                         WHERE user_id = "${user_id}"
-                                               `);
+                                         WHERE user_id = ${user_id}`);
     return [rows];
 }
 module.exports = {
-
     del,
     create,
     update,
