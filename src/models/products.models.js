@@ -2,15 +2,15 @@ const dbPool = require("../db");
 
 
 
-async function getProductByUserId(id) {
+async function getProductByOwnerId(shop_owner_id) {
     const [rows] = await dbPool.query(`SELECT * 
                                          FROM products
-                                         WHERE user_id = "${id}"`);
+                                         WHERE shop_owner_id = "${shop_owner_id}"`);
     return [rows];
 }
 async function createProduct(name, shop_owner_id, productline_id, description) {
     await dbPool.query(`INSERT INTO products(name, shop_owner_id, productline_id, description)
-                            VALUES("${name}", "${shop_owner_id}"), "${productline_id}"), "${description}")`);
+                            VALUES("${name}", "${shop_owner_id}", "${productline_id}", "${description}")`);
 }
 
 async function update(id, new_description, new_name) {
@@ -24,9 +24,33 @@ async function getProductlines() {
     const [rows] = await dbPool.query(`SELECT * FROM product_lines`);
     return [rows];
 }
+
+async function getProductDetailByProductId(product_id) {
+    const [rows] = await dbPool.query(`SELECT * FROM productdetails WHERE product_id = ${product_id}`);
+    return [rows];
+}
+
+async function createProductDetail(product_id, imgUrl, classification, stock, price, saleprice) {
+    await dbPool.query(`INSERT INTO productdetails(product_id, imgUrl, classification, stock, price, saleprice)
+                            VALUES("${product_id}", "${imgUrl}", "${classification}", "${stock}", "${price}", "${saleprice}")`);
+}
+
+async function getProductbyId(product_id) {
+    const [rows] = await dbPool.query(`SELECT * FROM products WHERE id = ${product_id}`);
+    return [rows];
+}
+async function del(id) {
+    await dbPool.query(`DELETE FROM products
+                        WHERE id = ${id}`);
+}
 module.exports = {
-    getProductByUserId,
+    getProductByOwnerId,
     getProductlines,
     createProduct,
-    update
+    update,
+    getProductDetailByProductId,
+    createProductDetail,
+    getProductbyId,
+
+
 }

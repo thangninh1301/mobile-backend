@@ -6,6 +6,7 @@ const morgan = require("morgan");
 const accountRoute = require("./routes/accounts.routes");
 const shopRoute = require("./routes/shop.routes");
 const productRoute = require("./routes/products.routes");
+const cartsRoute = require("./routes/carts.routes");
 
 const appExpress = express();
 
@@ -18,6 +19,7 @@ appExpress.use(express.static('./dist'));
 appExpress.use("/accounts/",accountRoute);
 appExpress.use("/products/",productRoute);
 appExpress.use("/shops/",shopRoute);
+appExpress.use("/carts/",cartsRoute);
 
 appExpress.use("/", (req, res) => {
     res.send('mobile-backend');

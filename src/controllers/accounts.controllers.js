@@ -91,7 +91,8 @@ async function updateContact(req, res){
     const  {
         fullname ,
         email,
-        phone
+        phone,
+        avatarUrl
     } = req.body;
     const {id}=req.tokenData;
     try{
@@ -104,7 +105,7 @@ async function updateContact(req, res){
         if(!contact.length)
             await account.createContactRow(id);
 
-        await account.updateContact(id,email,fullname,phone);
+        await account.updateContact(id,email,fullname,phone,avatarUrl);
 
         res.json(responseUtil.success({data: {}}));
     } catch (err) {

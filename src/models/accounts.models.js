@@ -22,11 +22,12 @@ async function updatePassword(id, new_password) {
                             SET password = "${new_password}"
                             WHERE id = ${id}`);
 }
-async function updateContact(userId, email, fullname, phone) {
+async function updateContact(userId, email, fullname, phone, avatarUrl) {
     await dbPool.query(`UPDATE contacts
                             SET phone = "${phone}",
                                 email = "${email}",
-                                fullname = "${fullname}"
+                                fullname = "${fullname}",
+                                avatarUrl= "${avatarUrl}"
                             WHERE userId = ${userId}`);
 }
 async function createContactRow(userId){
