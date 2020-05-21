@@ -7,6 +7,7 @@ const accountRoute = require("./routes/accounts.routes");
 const shopRoute = require("./routes/shop.routes");
 const productRoute = require("./routes/products.routes");
 const cartsRoute = require("./routes/carts.routes");
+const ordersRoute = require("./routes/orders.routes");
 
 const appExpress = express();
 
@@ -20,6 +21,7 @@ appExpress.use("/accounts/",accountRoute);
 appExpress.use("/products/",productRoute);
 appExpress.use("/shops/",shopRoute);
 appExpress.use("/carts/",cartsRoute);
+appExpress.use("/orders/",ordersRoute);
 
 appExpress.use("/", (req, res) => {
     res.send('mobile-backend');
