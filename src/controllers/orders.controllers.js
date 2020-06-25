@@ -11,7 +11,7 @@ async function create(req, res) {
     } = req.body;
     const {id}=req.tokenData;
     try {
-        const {order_detail_id} = data;
+        const {cart_id} = data;
 
         const ordercode=randomize('A0',9);
         await ordersModels.create_order(ordercode, id, moment().format("x"));
@@ -19,8 +19,8 @@ async function create(req, res) {
         let [rows]= await ordersModels.getordersbycode(ordercode);
         rows=rows[0];
 
-        for(let i = 0; i < order_detail_id.length; i++){
-            let [temp]= await  modelsCart.getCartById(order_detail_id[i]);
+        for(let i = 0; i < cart_id.length; i++){
+            let [temp]= await  modelsCart.getCartById(cart_id[i]);
             temp=temp[0];
             console.log(rows.id)
             if (temp.user_id===id)
