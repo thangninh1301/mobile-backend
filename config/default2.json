@@ -1,11 +1,13 @@
-{
+ {
   "PORT": 5000,
   "DATABASE": {
-    "HOST": "us-cdbr-east-06.cleardb.net",
-    "USER": "bb13d259a15b0d",
-    "PASSWORD": "4064d1cd",
+    "HOST": "localhost",
+    "USER": "root",
+    "PASSWORD": "Thang131@",
     "NAME": "heroku_4eeb90e3721c593"
   },
   "SECRET_KEY": "pum9BT+Eu6{U-,1",
   "EXAMINATION_SECRET_KEY": "Ze1lb5qbFlEtRMsq"
 }
+
+
