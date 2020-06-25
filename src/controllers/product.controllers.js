@@ -96,7 +96,7 @@ async function createProductDetails(req, res) {
         if (!price)
             throw new Error("cmissing");
         if (!saleprice)
-            throw new Error("classification greater than 8 characters");
+            throw new Error("missing");
         await productModels.createProductDetail(product_id, imgUrl, classification, stock, price, saleprice);
 
         res.json(responseUtil.success({data: {}}));
@@ -104,8 +104,66 @@ async function createProductDetails(req, res) {
         res.json(responseUtil.fail({reason: err.message}));
     }
 }
+async function delProduct(req, res) {
+    const {
+        product_id
+    } = req.query;
+    const {id}=req.tokenData;
+    try {
+        if (!product_id)
+            throw new Error("missing field product_id");
+        let [existedProduct] = await productModels.getProductbyId(product_id);
+        if (!existedProduct.length)
+            throw new Error("product not exist");
+        existedProduct=existedProduct[0];
+        if (id !== existedProduct.shop_owner_id)
+            throw new Error("you are not shop owner");
 
+        await productModels.delProduct(product_id);
 
+        res.json(responseUtil.success({data: {}}));
+    } catch (err) {
+        res.json(responseUtil.fail({reason: err.message}));
+    }
+}
+async function delProductDetail(req, res) {
+    const {
+        product_detail_id
+    } = req.query;
+    const {id}=req.tokenData;
+    try {
+        if (!product_detail_id)
+            throw new Error("missing field product_id");
+        let [existedProductDetail] = await productModels.getProductDetailByProductDetailId(product_detail_id);
+        if (!existedProductDetail.length)
+            throw new Error("product detail not exist");
+        existedProductDetail=existedProductDetail[0];
+
+        let [existedProduct] = await productModels.getProductbyId(existedProductDetail.product_id);
+
+        existedProduct=existedProduct[0];
+
+        if (id !== existedProduct.shop_owner_id)
+            throw new Error("you are not shop owner");
+
+        await productModels.delProductDetail(product_detail_id);
+
+        res.json(responseUtil.success({data: {}}));
+    } catch (err) {
+        res.json(responseUtil.fail({reason: err.message}));
+    }
+}
+
+async function getProductNew(req, res) {
+
+    try {
+        const [rows] = await productModels.getProductNew();
+
+        res.json(responseUtil.success({data: {rows}}));
+    } catch (err) {
+        res.json(responseUtil.fail({reason: err.message}));
+    }
+}
 
 module.exports = {
     createProduct,
@@ -113,5 +171,8 @@ module.exports = {
     getProductbyShopid,
     getProductInMyshop,
     createProductDetails,
-    getProductDetailByProductId
+    getProductDetailByProductId,
+    delProduct,
+    delProductDetail,
+    getProductNew
 }

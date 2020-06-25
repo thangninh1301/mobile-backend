@@ -23,7 +23,7 @@ async function getCartExist(user_id,product_id) {
     return [rows];
 }
 async function getCarts(user_id) {
-    const [rows] = await dbPool.query(`SELECT C.id,C.productdetail_id,C.quality,PD.product_id,P.shop_owner_id
+    const [rows] = await dbPool.query(`SELECT C.id,C.productdetail_id,C.quality,PD.product_id,P.shop_owner_id,PD.price,PD.saleprice,PD.imgUrl
                                          FROM cart AS C INNER JOIN productdetails AS PD
                                          ON C.productdetail_id = PD.ID
                                          INNER JOIN products AS P
@@ -31,10 +31,21 @@ async function getCarts(user_id) {
                                          WHERE C.user_id = ${user_id}`);
     return [rows];
 }
+
+async function getCartById(id) {
+    const [rows] = await dbPool.query(`SELECT C.*,PD.saleprice
+                                        FROM cart AS C INNER JOIN productdetails AS PD
+                                         ON C.productdetail_id = PD.id
+                                        WHERE C.id = "${id}"
+                                        `);
+    return [rows];
+}
+
 module.exports = {
     del,
     create,
     update,
     getCartExist,
-    getCarts
+    getCarts,
+    getCartById
 }

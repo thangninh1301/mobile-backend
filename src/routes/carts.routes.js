@@ -8,5 +8,7 @@ router.post("/create",
 router.get("/",
     loginToken.verify,
     cartsControllers.getCarts);
-
+router.delete("/",
+    loginToken.verify,
+    cartsControllers.del);
 module.exports=router;

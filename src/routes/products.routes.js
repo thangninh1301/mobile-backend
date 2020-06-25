@@ -19,4 +19,12 @@ router.post("/createProductDetail",
     productController.createProductDetails);
 router.get("/detail",
     productController.getProductDetailByProductId);
+router.delete("/",
+    loginToken.verify,
+    productController.delProduct);
+router.delete("/detail",
+    loginToken.verify,
+    productController.delProductDetail);
+router.get("/new",
+    productController.getProductNew);
 module.exports=router;

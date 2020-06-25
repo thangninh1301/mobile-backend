@@ -2,23 +2,34 @@ const jwt = require("jsonwebtoken");
 
 const ordersModels = require("../models/orders.models");
 const responseUtil = require("../utils/response.utils");
-
+const randomize = require('randomatic');
+const moment =require('moment');
+const modelsCart = require("../models/carts.models");
 async function create(req, res) {
     const {
-        fullname,
-        email,
-        phone,
-        address,
-        note,
-        status,
-        user_id,
         data
     } = req.body;
     const {id}=req.tokenData;
     try {
-        const {rows} = data;
-        for(let i = 0; i < rows.length; i++){
-            console.log(rows[i]);
+        const {order_detail_id} = data;
+
+        const ordercode=randomize('A0',9);
+        await ordersModels.create_order(ordercode, id, moment().format("x"));
+
+        let [rows]= await ordersModels.getordersbycode(ordercode);
+        rows=rows[0];
+
+        for(let i = 0; i < order_detail_id.length; i++){
+            let [temp]= await  modelsCart.getCartById(order_detail_id[i]);
+            temp=temp[0];
+            console.log(rows.id)
+            if (temp.user_id===id)
+            {
+                await ordersModels.create_orderdetail(rows.id,temp.productdetail_id,temp.quality,temp.saleprice);
+                await modelsCart.del(temp.id);
+            }
+
+
         }
 
         res.json(responseUtil.success({data: {}}));

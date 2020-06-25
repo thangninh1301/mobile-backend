@@ -1,13 +1,13 @@
 const dbPool = require("../db");
 
-async function create_order(fullname,email,phone,address,note,status,user_id) {
-    await dbPool.query(`INSERT INTO orders(fullname,email,phone,address,note,status,user_id)
-                            VALUES("${fullname}", "${email}", "${phone}"), "${address}"), "${note}"), "${status}"), "${user_id}")`);
+async function create_order(ordercode,user_id,time) {
+    await dbPool.query(`INSERT INTO orders(ordercode,status_id,user_id,time)
+                            VALUES("${ordercode}", 5, "${user_id}", "${time}")`);
 }
 
-async function create_orderdetail(order_id,product_id,quantity,orderprice) {
-    await dbPool.query(`INSERT INTO orders(order_id,product_id,quantity,orderprice)
-                            VALUES("${order_id}", "${product_id}", "${quantity}"), "${orderprice}")`);
+async function create_orderdetail(order_id,product_detail_id,quantity,orderprice) {
+    await dbPool.query(`INSERT INTO orderdetail(order_id,product_detail_id,quantity,orderprice)
+                            VALUES("${order_id}", "${product_detail_id}", "${quantity}", "${orderprice}")`);
 }
 
 async function getorders(user_id) {
@@ -17,7 +17,12 @@ async function getorders(user_id) {
                                         ORDER BY orders.id DESC    `);
     return [rows];
 }
-
+async function getordersbycode(ordercode) {
+    const [rows] = await dbPool.query(` SELECT * 
+                                        FROM orders
+                                        WHERE ordercode = "${ordercode}"`);
+    return [rows];
+}
 async function updateOrderStatus(id, new_status) {
     await dbPool.query(`UPDATE orders
                             SET status = "${new_status}"
@@ -27,5 +32,6 @@ module.exports = {
     create_order,
     create_orderdetail,
     getorders,
-    updateOrderStatus
+    updateOrderStatus,
+    getordersbycode
 }
