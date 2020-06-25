@@ -22,7 +22,7 @@ async function create(req, res) {
         for(let i = 0; i < cart_id.length; i++){
             let [temp]= await  modelsCart.getCartById(cart_id[i]);
             temp=temp[0];
-            console.log(rows.id)
+
             if (temp.user_id===id)
             {
                 await ordersModels.create_orderdetail(rows.id,temp.productdetail_id,temp.quality,temp.saleprice);
