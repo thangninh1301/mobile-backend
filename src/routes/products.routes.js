@@ -27,4 +27,6 @@ router.delete("/detail",
     productController.delProductDetail);
 router.get("/new",
     productController.getProductNew);
+router.get("/all",
+    productController.getAllProduct);
 module.exports=router;

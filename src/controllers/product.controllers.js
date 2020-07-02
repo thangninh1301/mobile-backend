@@ -169,7 +169,34 @@ async function getProductNew(req, res) {
 async function getAllProduct(req, res) {
 
     try {
-        const [rows] = await productModels.getProduct();
+        let [rows] = await productModels.getProduct();
+        let temp=rows[0].id;
+        let min=rows[0].saleprice;
+        let max=rows[0].saleprice;
+        let rowstemp=[rows.length-1]
+
+        for (let i = 0; i < rows.length; i++){
+            if (temp!==rows[i].id){
+                temp=rows[i].id;
+                rowstemp.push(i-1);
+                rows[i-1].price='đ'+min+'-'+'đ'+max;
+                min=rows[i].saleprice;
+                max=rows[i].saleprice;
+            }
+            else{
+                if (min>rows[i].saleprice) min =rows[i].saleprice;
+                if (max<rows[i].saleprice) max = rows[i].saleprice;
+            }
+        }
+        rows[rows.length-1].price='đ'+min+'-'+'đ'+max;
+
+
+        let rows2=[]
+        for (let i = 0; i < rowstemp.length; i++){
+            rows2.push(rows[rowstemp[i]])
+        }
+
+        rows=rows2
 
         res.json(responseUtil.success({data: {rows}}));
     } catch (err) {
@@ -186,5 +213,6 @@ module.exports = {
     getProductDetailByProductId,
     delProduct,
     delProductDetail,
-    getProductNew
+    getProductNew,
+    getAllProduct
 }

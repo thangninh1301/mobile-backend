@@ -62,7 +62,12 @@ async function getProductbyfirstChar() {
 }
 
 async function getProduct() {
-    const [rows] = await dbPool.query(`SELECT * FROM products LIMIT 50`);
+    const [rows] = await dbPool.query(`SELECT P.*,PD.saleprice 
+                                            FROM products AS P
+                                            INNER JOIN productdetails AS PD
+                                            on PD.product_id=P.id
+                                            WHERE PD.del=0 and P.del=0
+                                            limit 60`);
     return [rows];
 }
 async function getProductPricebyId(id) {
