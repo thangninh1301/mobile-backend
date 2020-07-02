@@ -7,7 +7,8 @@ async function createProduct(req, res) {
     const {
         productline_id,
         description,
-        name
+        name,
+        imgUrl
     } = req.body;
     const {id}=req.tokenData;
     try {
@@ -16,7 +17,7 @@ async function createProduct(req, res) {
         if (description.length < 8)
             throw new Error("description greater than 8 characters");
 
-        await productModels.createProduct(name,id,productline_id,description);
+        await productModels.createProduct(name,id,productline_id,description,imgUrl);
 
         res.json(responseUtil.success({data: {}}));
     } catch (err) {
@@ -158,6 +159,17 @@ async function getProductNew(req, res) {
 
     try {
         const [rows] = await productModels.getProductNew();
+
+        res.json(responseUtil.success({data: {rows}}));
+    } catch (err) {
+        res.json(responseUtil.fail({reason: err.message}));
+    }
+}
+
+async function getAllProduct(req, res) {
+
+    try {
+        const [rows] = await productModels.getProduct();
 
         res.json(responseUtil.success({data: {rows}}));
     } catch (err) {

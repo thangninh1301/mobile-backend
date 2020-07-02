@@ -8,9 +8,9 @@ async function getProductByOwnerId(shop_owner_id) {
                                          WHERE shop_owner_id = "${shop_owner_id}" AND del=0`);
     return [rows];
 }
-async function createProduct(name, shop_owner_id, productline_id, description) {
-    await dbPool.query(`INSERT INTO products(name, shop_owner_id, productline_id, description)
-                            VALUES("${name}", "${shop_owner_id}", "${productline_id}", "${description}")`);
+async function createProduct(name, shop_owner_id, productline_id, description,imgUrl) {
+    await dbPool.query(`INSERT INTO products(name, shop_owner_id, productline_id, description, imgUrl)
+                            VALUES("${name}", "${shop_owner_id}", "${productline_id}", "${description}", "${imgUrl}")`);
 }
 
 async function update(id, new_description, new_name) {
@@ -52,10 +52,23 @@ async function delProduct(id) {
 }
 
 async function getProductNew() {
-    const [rows] = await dbPool.query(`SELECT * FROM products ORDER BY id DESC LIMIT 30`);
+    const [rows] = await dbPool.query(`SELECT * FROM products  ORDER BY id DESC LIMIT 30`);
     return [rows];
 }
 
+async function getProductbyfirstChar() {
+    const [rows] = await dbPool.query(`SELECT * FROM products  LIMIT 40`);
+    return [rows];
+}
+
+async function getProduct() {
+    const [rows] = await dbPool.query(`SELECT * FROM products LIMIT 50`);
+    return [rows];
+}
+async function getProductPricebyId(id) {
+    const [rows] = await dbPool.query(`SELECT price FROM productdetails WHERE id = ${id} `);
+    return [rows];
+}
 module.exports = {
     getProductByOwnerId,
     getProductlines,
@@ -67,7 +80,9 @@ module.exports = {
     delProduct,
     delProductDetail,
     getProductDetailByProductDetailId,
-    getProductNew
+    getProductNew,
+    getProductPricebyId,
+    getProduct
 
 
 }
