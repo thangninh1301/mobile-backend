@@ -52,10 +52,12 @@ async function delProduct(id) {
 }
 
 async function getProductNew() {
-    const [rows] = await dbPool.query(`SELECT P.*
+    const [rows] = await dbPool.query(`SELECT P.*,PL.line_name
                                             FROM products AS P
                                             INNER JOIN productdetails AS PD 
                                             on PD.product_id=P.id
+                                            INNER JOIN product_lines AS PL
+                                            on P.productline_id=PL.id
                                             ORDER BY P.id ASC LIMIT 30`);
     return [rows];
 }
@@ -66,10 +68,12 @@ async function getProductbyfirstChar() {
 }
 
 async function getProduct() {
-    const [rows] = await dbPool.query(`SELECT P.*,PD.saleprice 
+    const [rows] = await dbPool.query(`SELECT P.*,PD.saleprice,PL.line_name
                                             FROM products AS P
                                             INNER JOIN productdetails AS PD 
                                             on PD.product_id=P.id
+                                            INNER JOIN product_lines AS PL
+                                            on P.productline_id=PL.id
                                             WHERE PD.del=0 and P.del=0
                                             limit 60`);
     return [rows];
