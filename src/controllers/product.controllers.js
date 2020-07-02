@@ -158,7 +158,22 @@ async function delProductDetail(req, res) {
 async function getProductNew(req, res) {
 
     try {
-        const [rows] = await productModels.getProductNew();
+        let [rows] = await productModels.getProductNew();
+        let temp=rows[0].id;
+        let rowstemp=[rows.length-1]
+        for (let i = 0; i < rows.length; i++){
+            if (temp!==rows[i].id){
+                temp=rows[i].id;
+                rowstemp.push(i-1);
+            }
+        }
+        let rows2=[]
+        for (let i = 0; i < rowstemp.length; i++){
+            rows2.push(rows[rowstemp[i]])
+        }
+
+        rows=rows2
+
 
         res.json(responseUtil.success({data: {rows}}));
     } catch (err) {

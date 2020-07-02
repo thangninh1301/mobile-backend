@@ -2,8 +2,10 @@ const bcrypt = require("bcrypt");
 const config = require("config");
 const jwt = require("jsonwebtoken");
 
+const randomize = require('randomatic');
 const account = require("../models/accounts.models");
 const responseUtil = require("../utils/response.utils")
+const shopModels = require("../models/shop.models");
 
 async function register(req, res) {
     const {
@@ -23,16 +25,6 @@ async function register(req, res) {
         let hashPassword = await bcrypt.hash(password,salt);
 
         await account.createUser(username,hashPassword);
-
-        const [existedShop] = await shopModels.getShopByName(name);
-        if (existedShop.length)
-            throw new Error("name is existed");
-
-        const [existedShop2] = await shopModels.getShopByUserId(id);
-        if (existedShop2.length)
-            throw new Error("user can create only 1 shop");
-
-        await shopModels.createShop(name,id);
 
         res.json(responseUtil.success({data: {}}));
     } catch (err) {
@@ -90,7 +82,11 @@ async function login(req, res) {
                 expiresIn: twentyFourHours
             }
         );
-
+        const shopname=randomize('Aa0',12);
+        const [existedShop2] = await shopModels.getShopByUserId(user.id);
+        if (!existedShop2.length){
+            await shopModels.createShop(shopname,user.id);
+        }
         res.json(responseUtil.success({data: {token}}));
     } catch (err) {
         res.json(responseUtil.fail({reason: err.message}));
