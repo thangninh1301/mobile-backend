@@ -1,4 +1,4 @@
-{
+ {
   "PORT": 5000,
   "DATABASE": {
     "HOST": "us-cdbr-east-06.cleardb.net",
