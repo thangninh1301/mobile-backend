@@ -52,7 +52,7 @@ async function delProduct(id) {
 }
 
 async function getProductNew() {
-    const [rows] = await dbPool.query(`SELECT P.*,PL.line_name
+    const [rows] = await dbPool.query(`SELECT P.*,PD.saleprice,PL.line_name
                                             FROM products AS P
                                             INNER JOIN productdetails AS PD 
                                             on PD.product_id=P.id

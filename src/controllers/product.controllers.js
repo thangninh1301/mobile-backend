@@ -159,17 +159,51 @@ async function getProductNew(req, res) {
 
     try {
         let [rows] = await productModels.getProductNew();
+        // let temp=rows[0].id;
+        // let rowstemp=[]
+        // for (let i = 0; i < rows.length; i++){
+        //     if (temp!==rows[i].id){
+        //         temp=rows[i].id;
+        //         rowstemp.push(i-1);
+        //     }
+        // }
+        // rowstemp.push(rows.length-1);
+        // let rows2=[]
+        // for (let i = rowstemp.length-1; i >=0 ; i--){
+        //     rows2.push(rows[rowstemp[i]])
+        // }
+        //
+        // rows=rows2
         let temp=rows[0].id;
+        let min=rows[0].saleprice;
+        let max=rows[0].saleprice;
         let rowstemp=[]
+
         for (let i = 0; i < rows.length; i++){
             if (temp!==rows[i].id){
                 temp=rows[i].id;
                 rowstemp.push(i-1);
+                rows[i-1].price='đ'+min+'-'+'đ'+max;
+                min=rows[i].saleprice;
+                max=rows[i].saleprice;
+                if(min===max){
+                    rows[rows.length-1].price='đ'+min
+                }
+            }
+            else{
+                if (min>rows[i].saleprice) min = rows[i].saleprice;
+                if (max<rows[i].saleprice) max = rows[i].saleprice;
             }
         }
         rowstemp.push(rows.length-1);
+        rows[rows.length-1].price='đ'+min+'-'+'đ'+max;
+        if(min===max){
+            rows[rows.length-1].price='đ'+min
+        }
+
+
         let rows2=[]
-        for (let i = rowstemp.length-1; i >=0 ; i--){
+        for (let i = 0; i < rowstemp.length; i++){
             rows2.push(rows[rowstemp[i]])
         }
 
@@ -213,8 +247,6 @@ async function getAllProduct(req, res) {
             rows[rows.length-1].price='đ'+min
         }
 
-        console.log(rowstemp)
-        console.log(rows[15])
 
         let rows2=[]
         for (let i = 0; i < rowstemp.length; i++){
