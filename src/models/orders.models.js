@@ -28,10 +28,48 @@ async function updateOrderStatus(id, new_status) {
                             SET status = "${new_status}"
                             WHERE id = ${id}`);
 }
+async function updateOrder(id, fullname, phone, address) {
+    await dbPool.query(`UPDATE orders
+                            SET fullname = "${fullname}",
+                                phone = "${phone}",
+                                address = "${address}"
+                            WHERE id = ${id}`);
+}
+async function getordersbyid(id) {
+    const [rows] = await dbPool.query(` SELECT * 
+                                        FROM orders
+                                        WHERE id = "${id}"`);
+    return [rows];
+}
+
+async function getordersbyuserid(user_id) {
+    const [rows] = await dbPool.query(` SELECT O.*,OS.status,S.waybill_code
+                                        FROM orders as O 
+                                        INNER JOIN orderstatus AS OS 
+                                        ON O.status_id = OS.id
+                                        INNER JOIN shipment as S
+                                        on S.order_id=O.id
+                                        WHERE user_id = "${user_id}"`);
+    return [rows];
+}
+
+async function getorderdetailbyorderid(order_id) {
+    const [rows] = await dbPool.query(` SELECT OD.*,PD.imgUrl,PD.classification
+                                        FROM orderdetail as OD 
+                                        INNER JOIN productdetails as PD
+                                        ON OD.product_detail_id = PD.id
+                                        WHERE order_id = "${order_id}"`);
+    return [rows];
+}
+
 module.exports = {
     create_order,
     create_orderdetail,
     getorders,
     updateOrderStatus,
-    getordersbycode
+    getordersbycode,
+    updateOrder,
+    getordersbyid,
+    getordersbyuserid,
+    getorderdetailbyorderid
 }

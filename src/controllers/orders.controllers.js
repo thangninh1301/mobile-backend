@@ -32,12 +32,79 @@ async function create(req, res) {
 
         }
 
+        res.json(responseUtil.success({data: {order_id:rows.id}}));
+    } catch (err) {
+        res.json(responseUtil.fail({reason: err.message}));
+    }
+}
+
+async function update(req, res) {
+    const {
+        order_id,
+        fullname,
+        address,
+        phone
+    } = req.body;
+    const {id}=req.tokenData;
+    try {
+        if (!order_id)
+            throw new Error("missig");
+        if (!fullname)
+            throw new Error("missig");
+        if (!address)
+            throw new Error("missig");
+        if (!phone)
+            throw new Error("missig");
+        const [existedOrder] = await ordersModels.getordersbyid(order_id);
+        if (!existedOrder.length){
+            throw new Error("not exist");
+        }
+        await ordersModels.updateOrder(order_id,fullname,phone,address);
+
+
         res.json(responseUtil.success({data: {}}));
     } catch (err) {
         res.json(responseUtil.fail({reason: err.message}));
     }
 }
 
+async function getAllOrdersbyUser(req, res) {
+    const {id}=req.tokenData;
+    try {
+        let [rows] = await ordersModels.getordersbyuserid(id)
+        for (let i = 0; i < rows.length; i++){
+            let [OD] = await ordersModels.getorderdetailbyorderid(rows[i].id)
+            if( OD.length) {
+                rows[i].imgUrl= OD[0].imgUrl;
+                let totalprice=0
+                for (let j = 0; j < OD.length; j++){
+                    totalprice=totalprice + OD[j].orderprice* OD[j].quantity;
+
+                }
+                rows[i].totalprice= totalprice;
+            }
+
+        }
+        res.json(responseUtil.success({data: {rows}}));
+    } catch (err) {
+        res.json(responseUtil.fail({reason: err.message}));
+    }
+}
+async function getOrderDetailbyOrderid(req, res) {
+    const {
+        order_id
+    } = req.query;
+    try {
+        const [rows] = await ordersModels.getorderdetailbyorderid(order_id)
+
+        res.json(responseUtil.success({data: {rows}}));
+    } catch (err) {
+        res.json(responseUtil.fail({reason: err.message}));
+    }
+}
 module.exports = {
- create
+    create,
+    update,
+    getAllOrdersbyUser,
+    getOrderDetailbyOrderid
 }
