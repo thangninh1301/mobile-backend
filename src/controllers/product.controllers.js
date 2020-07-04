@@ -190,10 +190,10 @@ async function getProductNew(req, res) {
                     rows[rows.length-1].price='đ'+min
                 }
             }
-            else{
+
                 if (min>rows[i].saleprice) min = rows[i].saleprice;
                 if (max<rows[i].saleprice) max = rows[i].saleprice;
-            }
+
         }
         rowstemp.push(rows.length-1);
         rows[rows.length-1].price='đ'+min+'-'+'đ'+max;
@@ -236,10 +236,10 @@ async function getAllProduct(req, res) {
                     rows[rows.length-1].price='đ'+min
                 }
             }
-            else{
+            // else{
                 if (min>rows[i].saleprice) min = rows[i].saleprice;
                 if (max<rows[i].saleprice) max = rows[i].saleprice;
-            }
+            // }
         }
         rowstemp.push(rows.length-1);
         rows[rows.length-1].price='đ'+min+'-'+'đ'+max;

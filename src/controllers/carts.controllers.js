@@ -44,9 +44,24 @@ async function getCarts(req, res) {
         //     rows[i].saleprice=existedProductDetail.saleprice;
         //     rows[i].saleprice=existedProductDetail.saleprice;
         // }
+        let rows2=[];
+        let rows3=[];
+        let tempid = rows[0].shop_owner_id;
+        for (let i = 0; i < rows.length; i++){
+            if(tempid!==rows[i].shop_owner_id){
+                tempid=rows[i].shop_owner_id;
+                rows3.push(rows2)
+                rows2=[];
+            }
+
+            rows2.push(rows[i]);
 
 
-        res.json(responseUtil.success({data: {rows}}));
+        }
+        rows3.push(rows2);
+
+
+        res.json(responseUtil.success({data: {rows:rows3}}));
     } catch (err) {
         res.json(responseUtil.fail({reason: err.message}));
     }
