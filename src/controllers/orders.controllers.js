@@ -27,6 +27,7 @@ async function create(req, res) {
             {
                 await ordersModels.create_orderdetail(rows.id,temp.productdetail_id,temp.quality,temp.saleprice);
                 await modelsCart.del(temp.id);
+                await ordersModels.createShipment(rows.id);
             }
 
 

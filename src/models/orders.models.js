@@ -49,7 +49,7 @@ async function getordersbyuserid(user_id) {
                                         ON O.status_id = OS.id
                                         INNER JOIN shipment as S
                                         on S.order_id=O.id
-                                        WHERE user_id = "${user_id}"`);
+                                        WHERE O.user_id = "${user_id}"`);
     return [rows];
 }
 
@@ -100,6 +100,10 @@ async function updateShipment(order_id, waybill_code) {
                             SET waybill_code = "${waybill_code}"   
                             WHERE order_id = ${order_id}`);
 }
+async function createShipment(order_id) {
+    await dbPool.query(`INSERT INTO shipment(order_id)
+                            VALUES("${order_id}")`);
+}
 module.exports = {
     create_order,
     create_orderdetail,
@@ -112,5 +116,6 @@ module.exports = {
     getorderdetailbyorderid,
     getordersbyshopid,
     getordersbyshopidandOrderid,
-    updateShipment
+    updateShipment,
+    createShipment
 }
