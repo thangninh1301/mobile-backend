@@ -153,11 +153,39 @@ async function updateStatusbyshop(req, res) {
         res.json(responseUtil.fail({reason: err.message}));
     }
 }
+
+async function updateFinishStatusbyshop(req, res) {
+    const {id}=req.tokenData;
+    const {
+        order_id
+    } = req.body;
+    try {
+        if (!order_id)
+            throw new Error("missig");
+
+        const [existed] = await ordersModels.getordersbyid(order_id);
+
+        if (!existed.length)
+            throw new Error("orders not exist");
+
+        const [exited2] = await ordersModels.getordersbyshopidandOrderid(id,order_id);
+        if (!exited2.length)
+            throw new Error("you dont have permission, you aren't shop owner");
+
+
+        await ordersModels.updateOrderStatusFinishByOrderid_shop(order_id)
+
+        res.json(responseUtil.success({data: {}}));
+    } catch (err) {
+        res.json(responseUtil.fail({reason: err.message}));
+    }
+}
 module.exports = {
     create,
     update,
     getAllOrdersbyUser,
     getOrderDetailbyOrderid,
     getAllOrdersbymyShop,
-    updateStatusbyshop
+    updateStatusbyshop,
+    updateFinishStatusbyshop
 }

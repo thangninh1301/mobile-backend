@@ -28,6 +28,11 @@ async function updateOrderStatusByOrderid_shop(id) {
                             SET status_id = 2
                             WHERE id = ${id}`);
 }
+async function updateOrderStatusFinishByOrderid_shop(id) {
+    await dbPool.query(`UPDATE orders
+                            SET status_id = 3
+                            WHERE id = ${id}`);
+}
 async function updateOrder(id, fullname, phone, address) {
     await dbPool.query(`UPDATE orders
                             SET fullname = "${fullname}",
@@ -117,5 +122,6 @@ module.exports = {
     getordersbyshopid,
     getordersbyshopidandOrderid,
     updateShipment,
-    createShipment
+    createShipment,
+    updateOrderStatusFinishByOrderid_shop
 }

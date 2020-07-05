@@ -20,6 +20,9 @@ router.get("/myshop",
 router.put("/byshop",
     loginToken.verify,
     ordersControllers.updateStatusbyshop);
+router.put("/finishbyshop",
+    loginToken.verify,
+    ordersControllers.updateFinishStatusbyshop);
 
 
 
