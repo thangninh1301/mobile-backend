@@ -82,6 +82,9 @@ async function getProductPricebyId(id) {
     const [rows] = await dbPool.query(`SELECT price FROM productdetails WHERE id = ${id} `);
     return [rows];
 }
+async function updateQuatity(id,stock) {
+    await dbPool.query(`UPDATE productdetails SET stock=${stock} WHERE id = ${id}`);
+}
 module.exports = {
     getProductByOwnerId,
     getProductlines,
@@ -95,7 +98,8 @@ module.exports = {
     getProductDetailByProductDetailId,
     getProductNew,
     getProductPricebyId,
-    getProduct
+    getProduct,
+    updateQuatity
 
 
 }

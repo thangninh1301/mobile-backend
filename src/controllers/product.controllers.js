@@ -260,7 +260,29 @@ async function getAllProduct(req, res) {
         res.json(responseUtil.fail({reason: err.message}));
     }
 }
+async function updateQuatity(req, res) {
+    const {
+        product_detail_id,
+        quantity
+    } = req.query;
+    const {id}=req.tokenData;
+    try {
+        if (!product_detail_id)
+            throw new Error("missing field productdetail_id");
+        let [existedProductDetail] = await productModels.getProductDetailByProductDetailId(product_detail_id);
+        if (!existedProductDetail.length)
+            throw new Error("product detail not exist");
 
+        let [existedProduct] = await productModels.getProductbyId(existedProductDetail[0].product_id);
+
+        if (id!==existedProduct[0].shop_owner_id)
+            throw new Error("not shop ownner");
+        await productModels.updateQuatity(product_detail_id,quantity)
+        res.json(responseUtil.success({data: {}}));
+    } catch (err) {
+        res.json(responseUtil.fail({reason: err.message}));
+    }
+}
 module.exports = {
     createProduct,
     getProductLines,
@@ -271,5 +293,7 @@ module.exports = {
     delProduct,
     delProductDetail,
     getProductNew,
-    getAllProduct
+    getAllProduct,
+    updateQuatity
+
 }

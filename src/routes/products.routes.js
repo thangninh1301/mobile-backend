@@ -29,4 +29,7 @@ router.get("/new",
     productController.getProductNew);
 router.get("/all",
     productController.getAllProduct);
+router.put("/quantity",
+    loginToken.verify,
+    productController.updateQuatity);
 module.exports=router;
