@@ -14,7 +14,12 @@ router.get("/byuser",
 router.get("/orderdetail",
     loginToken.verify,
     ordersControllers.getOrderDetailbyOrderid);
-
+router.get("/myshop",
+    loginToken.verify,
+    ordersControllers.getAllOrdersbymyShop);
+router.put("/byshop",
+    loginToken.verify,
+    ordersControllers.updateStatusbyshop);
 
 
 
