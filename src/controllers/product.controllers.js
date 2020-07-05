@@ -264,9 +264,10 @@ async function updateQuatity(req, res) {
     const {
         product_detail_id,
         quantity
-    } = req.query;
+    } = req.body;
     const {id}=req.tokenData;
     try {
+
         if (!product_detail_id)
             throw new Error("missing field productdetail_id");
         let [existedProductDetail] = await productModels.getProductDetailByProductDetailId(product_detail_id);
